@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_go_router/dashboard.dart';
 import 'package:flutter_go_router/home_page.dart';
+import 'package:flutter_go_router/route_name.dart';
 import 'package:flutter_go_router/settings_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,8 +37,16 @@ class MyApp extends StatelessWidget {
   final router = GoRouter(
       //initialLocation: "/settings", //This route will initialise first in "initialLocation"
       routes: [
-        GoRoute(path: "/", builder: ((context, state) => HomePage())), //Initial route
-        GoRoute(path: "/dashboard", builder: ((context, state) => DashBoard())),
-        GoRoute(path: "/settings", builder: ((context, state) => SettingsPage())),
+        GoRoute(path: "/", builder: ((context, state) => HomePage()), routes: [
+          GoRoute(
+            name: RouteName.dashBoard,
+              path: "dashboard/:name",
+              builder: ((context, state) => DashBoard(
+                    name: state.params["name"], //Passing parameter
+                  ))),
+          GoRoute(name: RouteName.settings,path: "settings", builder: ((context, state) => SettingsPage(
+
+          ))),
+        ]), //Initial route
       ]);
 }
